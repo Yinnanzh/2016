@@ -3,7 +3,7 @@ title: Version Control with Git
 output: html_document
 author: Stephanie Hicks, Luis Campos
 ---
-
+Yinnan Zheng
 #### Preface
 
 This R Markdown assumes you have successfully installed git and 
