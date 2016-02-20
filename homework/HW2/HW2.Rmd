@@ -26,7 +26,11 @@ you realize that the chance of red or black are both slightly less than 1/2. The
 Let's make a quick sampling model for this simple version of roulette. You are going to bet a dollar each time you play and always bet on black. Make a box model for this process using the `sample` function. Write a function `get_outcome` that takes as an argument the number of times you play $N$ and returns your earnings $S_N$.
 
 ```{r}
-##Your code here
+roullete <- rep( c("red", "black", "green"), times = c(18,18,2))
+get_outcome <- function(N) {
+        bet <- sample(roullete, N, replace=T)
+        sum(bet=="black")
+}
 ```
 
 ## Problem 1B
@@ -34,24 +38,65 @@ Let's make a quick sampling model for this simple version of roulette. You are g
 Use Monte Carlo simulation to study the distribution of total earnings $S_N$ for $N=10,25,100,1000$. That is, study the distribution of earnings for different number of plays. What are the distributions of these two random variables? How do the expected values and standard errors change with $N$? Then do the same thing for the average winnings $S_N/N$. What result that you learned in class predicts this?
 
 ```{r}
-##Your code here
+N <- c(10,25,100,1000) 
+
+# Distribution of total earnings
+simulation1 <- function(N, B = 10^5){
+        earnings <- replicate(B, get_outcome(N))
+        plot(density(earnings), xlab="Total earnings", 
+             main=paste("Distribution of total earnings when N=",N))       
+        c(N, mean(earnings), sd(earnings))
+}
+
+summary1 <- as.data.frame(sapply(N, simulation1))
+rownames(summary1) <- c("N","Mean","Standard error")
+summary1[1,] <- format(summary1[1,],digits=2)
+summary1
+
+# Distribution of total earnings
+simulation2 <- function(N, B = 10^5){
+        earnings.average <- replicate(B, get_outcome(N))/N
+        plot(density(earnings.average), xlab="Average earnings", 
+             main=paste("Distribution of average earnings when N=",N))       
+        c(N, mean(earnings.average), sd(earnings.average))
+}
+
+summary2 <- as.data.frame(sapply(N, simulation2))
+rownames(summary2) <- c("N","Mean","Standard error")
+summary2[1,] <- format(summary2[1,],digits=2)
+summary2
 ```
 
-Your answer here.
+All the distributions for total earnings are approximately symmetrical, with high density in the middle and decreased density on two ends. Since total earnings can only take on values no larger than N, when N is not large enough (N = 10, 25, 100), the plot appears to fluctuate a bit. When N increases to 1000, the curve appears smooth, and we can see clearly that it is approximately normally distributed.
 
+Both the expected values for total earnings and their corresponding standard errors increase as N increases. The expected values are all a bit smaller than N/2.
+
+The distributions for average earnings have similar shape with the ones for total earnings. We still see a approximate normal distribution. What is different for average earnings is that the X axis can be comparable across different plots with different Ns. 
+
+The expected values for average earnings are close (0.474) for different Ns. The standard error decreases as N increases.
+
+What result that you learned in class predicts this? The total earning follows binomial distribution, with n=N, p = 18/38 = 9/19.
 
 ## Problem 1C
 
 What is the expected value of our sampling model? What is the standard deviation of our sampling model?
 
-Your answer here.
+Expected value: $E(S_N) = \frac{9}{19}*N$
+
+Standard deviation: $$S.d.(S_N) = \sqrt{\frac{9}{19}*(1-\frac{9}{19}*N)$$
 
 ## Problem 1D
 
 Use CLT to approximate the probability that the casino loses money when you play 25 times. Then use a Monte Carlo simulation to confirm.
 
 ```{r}
-##Your code here
+# use CLT
+mean25 <- 9/19*25
+sd25 <- sqrt((9/19)*(1-9/19)*25)
+1-pnorm(25, mean = mean25, sd = sd25)
+
+# use Monte Carlo simulation
+
 ```
 
 
