@@ -93,10 +93,14 @@ Use CLT to approximate the probability that the casino loses money when you play
 # use CLT
 mean25 <- 9/19*25
 sd25 <- sqrt((9/19)*(1-9/19)*25)
-1-pnorm(25, mean = mean25, sd = sd25)
+p.clt <- 1-pnorm(25, mean = mean25, sd = sd25)
+print(paste("The probability that the casino loses money when you play 25 times is", p.clt))
 
 # use Monte Carlo simulation
-
+B <- 10^5
+earnings25 <- replicate(B, get_outcome(25))
+p.mc <- sum(earnings25 > 25)/B
+print(paste("The probability that the casino loses money when you play 25 times is ", p.mc))
 ```
 
 
@@ -106,7 +110,8 @@ sd25 <- sqrt((9/19)*(1-9/19)*25)
 In general, what is the probability that the casino loses money as a function of $N$? Make a plot for values ranging from 25 to 1,000. Why does the casino give you free drinks if you keep playing?
 
 ```{r}
-##Your code here
+
+
 ```
 
 Your answer here. 
