@@ -272,14 +272,38 @@ Suppose you are consulting for a casino. They want to know how many $1 bets a pe
 
 1. We know that the average of the sampling model is -1/19 and the standard deviation is $\sigma = 2 \sqrt{10/19 \times 9/19}$. Run a Monte Carlo simulation with $N=400$ to learn about the distribution of the errors. Remember the error is the average winning minus $\mu = -1/19$.Confirm that the expected value of the error is 0 and that the standard error is $\sigma / \sqrt{N}$. http://goo.gl/forms/YHQgejqKfl
 
+```{r}
+
+```
+
 2. Confirm that the distribution is approximately normal with mean 0 and standard deviation $\sigma / N$ http://goo.gl/forms/5iET73x0dR
+
+```{r}
+
+```
+
 
 3. How large does the error have to be for the casino to lose money? http://goo.gl/forms/q7Ov6hl5le
 
+```{r}
+
+```
+
+
 4. Use the CLT to compute the probability of a positive earnings. Confirm with the simulation results. http://goo.gl/forms/7TWqQdrWuf
 
+```{r}
+pnorm
+```
 
 5. With $N=400$ the probability of negative earnings is too high. What does $N$ need to be for the probability of positive earnings is 0? Confirm with a simulation. http://goo.gl/forms/2uRkCr5nHI
+
+```{r}
+N <- ceiling( -qnorm(1-10^3)+sigma/mu)^2
+B <- 10^5
+mu <- -1/19
+sigma <- 2*sqrt(9/19*10/19)
+```
 
 ### Assessment
 
@@ -295,10 +319,26 @@ Suppose you are demographer and want to get an estimate of the average height of
 
 1. What is the average and standard deviation of our sampling model? What is the expected value and standard deviation. http://goo.gl/forms/0NfIk7PkpC
 
+```{r}
+mu <- mean(y)
+sigma <- sqrt(mean((y-mu)^2))
+
+```
+
 
 2. Consider the random variable defined by taking a sample of size $N$ and then computing the average. What are the expected value and standard error of this random variable? http://goo.gl/forms/zradVEY58t
+```{r}
+N <- 25
+mu
+sigma/sqrt(N)
+```
 
 3. What is the probability that our estimate is within one inch of the population mean? http://goo.gl/forms/zIiqhGuVCl
+
+```{r}
+1-(1-pnorm(1/(sigma/sqrt(N))))*2
+
+```
 
 Note that if we wanted to  compute this last quantity in practice we need to know $\sigma$. But we don't. 
 
@@ -401,8 +441,19 @@ prob_heads <- sample(c(0.5, 0.6, 0.4),1)
 
 1. Now the probability is set. The coin is either fair or not, but we don't know which. Use a Monte Carlo simulation to toss your coin 100 times. Report the proportion of heads. http://goo.gl/forms/AakupfnzOq
 
+```{r}
+mean(sample(c(1,0),100, replace=T, prob=c(prob_heads,1-prob_heads)))
+```
+
 
 2. Is it fair? Use CLT to construct a 95% confidence based on this estimate. http://goo.gl/forms/RCUHxhAFn3
+
+```{r}
+ph_hat <- mean(sample(c(1,0),100, replace=T, prob=c(prob_heads,1-prob_heads)))
+N <- 100
+conf_int <- ph_hat + c(-1,1)*qnorm(0.975)*sqrt(ph_hat*(1-ph_hat)/N)
+conf_int
+```
 
 
 3. Does the interval cover the true value of `prob_head`? http://goo.gl/forms/jXeOvBcAJg
@@ -410,6 +461,16 @@ prob_heads <- sample(c(0.5, 0.6, 0.4),1)
 
 4. No use a Monte Carlo simulation to re run this experiment (keeping `prob_hear` fixed) 10000 times. Do we confirm that we cover 95% of the time? http://goo.gl/forms/GqHUcZkSDM
 
+```{r}
+cover <- replicate(10000, {
+        ph_hat <- mean(sample(c(1,0),100, replace=T, prob=c(prob_heads,1-prob_heads)))
+        conf_int <- ph_hat + c(-1,1)*qnorm(0.975)*sqrt(ph_hat*(1-ph_hat)/100)
+        prob_heads >= conf_int[1] && prob_heads <= conf_int[2]
+        })
+
+mean(cover)
+
+```
 
 
 ### Confidence Intervals: Monte Carlo Simulaion 
