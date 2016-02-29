@@ -37,19 +37,7 @@ This is a contrived example, but it will help us understand how we think about m
 
 If we are betting on black on roulette, we can let $Y_i$ be either -1 or 1. Now what is $\theta$ and what is the distribution of our error? What is the standard deviation of the errors? Hint: the expected value of the error must be 0.
 
-<<<<<<< HEAD
-$\theta = -1/19$
 
-```{r}
-B <- 10^5
-theta <- -1/19
-Y <- sample (c(-1,1), B, replace=T, prob=c(10/19, 9/19))
-error <- Y - theta
-prop.table(table(error))
-sqrt(mean(error^2))
-s*sqrt(10/19*9/19)  # by theory
-
-=======
 
 Answer: Our parameter is $\theta = -1/19$ and our errors are $1 - \theta$ with probability $9/19$ and $-1 - \theta$ with probability $10/19$. 
 
@@ -68,7 +56,7 @@ error <- Y - theta
 prop.table(table(error))
 sqrt(mean(error^2))
 2*sqrt(10/19*9/19)
->>>>>>> course/master
+
 ```
 
 
@@ -90,12 +78,6 @@ Y <- sample(y, 25, replace = TRUE)
 
 What are $\theta$, $N$, and $\varepsilon_1$ ?
 
-<<<<<<< HEAD
-```{r}
-theta <- mean(y)
-N <- length(Y)
-error1 <- Y[1]-theta
-=======
 
 ```{r}
 ## N is 
@@ -104,7 +86,7 @@ length(Y)
 theta <- mean(y)
 ## the firest error is 
 error_1 <- Y[1] - theta
->>>>>>> course/master
+
 ```
 
 
@@ -181,14 +163,10 @@ with $N=22$.
 Using the CLT theory we have learned, how do we model $\varepsilon$, what is the expected value and standard deviation of 
 $\varepsilon$? 
 
-<<<<<<< HEAD
-expected value:0
-sd: sqrt(theta(1-theta)/N) where N=100
-=======
+
 Answer: According to CLT 
 
 $$ \varepsilon \sim \mbox{Normal}\left( 0, \frac{\sqrt{\theta (1-\theta)}}{\sqrt{100}} \right)$$
->>>>>>> course/master
 
 
 #### Assessment 5: http://goo.gl/forms/0sYp0gFnxZ
@@ -198,15 +176,6 @@ data exploration to check if the model assumptions make sense.
 
 ```{r}
 theta <- 0.534
-<<<<<<< HEAD
-Y <- tab$estimate/100
-error <- Y-theta
-hist(error)
-se <- sqrt(theta*(1-theta)/100)
-qqnorm(error)
-qqnorm(error/sigma)
-```
-=======
 Y <- tab$estimate/100 
 error <- Y - theta
 hist(error)
@@ -215,7 +184,6 @@ qqnorm(error/se)
 abline(0,1)
 ```
 
->>>>>>> course/master
 
 
 ### Estimating parameters
