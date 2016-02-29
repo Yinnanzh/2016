@@ -105,7 +105,7 @@ Note how the observed number varies.  We refer to this as _random_ or _chance_ v
 
 ## Sampling Models
 
-Many procedures studied and used by data scientist can be modeled quite well as a sum of draws from a jar. For example, we modeled the process of polling likely voters as drawing 0s (republicans) and 1s (republicans) from a jar. To be more specific we can turn the `x` into 0s and 1s:
+Many procedures studied and used by data scientist can be modeled quite well as a sum of draws from a jar. For example, we modeled the process of polling likely voters as drawing 0s (republicans) and 1s (democrats) from a jar. To be more specific we can turn the `x` into 0s and 1s:
 
 ```{r}
 x <- as.numeric(x=="D")
@@ -416,7 +416,7 @@ mu
 sigma/sqrt(N)
 ```
 
-3. What is the probability that our estimate is within one inch of the population avergae?
+3. What is the probability that our estimate is within one inch of the population average?
 
 <<<<<<< HEAD
 ```{r}
@@ -720,7 +720,7 @@ What do you see?
 A - A flat line
 B - Exactly a straight line
 C - Almost a straight line with some points off
-D - The function $ f(x)=\sqrt(x)$
+D - The function $f(x)=\sqrt(x)$
 
 ```{r}
 p_hat <- polls$Obama/100
@@ -729,6 +729,61 @@ N <- ( qnorm(0.975) * sqrt(p_hat*(1-p_hat)) /
 plot(N, polls$observations)
 abline(0,1)
 ```
+
+
+## In-class questions: 2/29/2016
+We're going to try something new today. If you have small technical questions during class, go to this [link](https://docs.google.com/document/d/1rClyG2ZMoTM9tER9zjXCBT-26lrpuIH_oSkCLCI6pII/edit?usp=sharing) and ask away.
+
+
+## p-values
+
+p-values are ubiquitous in the scientific literature. They are related to confidence interval so we introduce the concept here. 
+
+Let's consider the blue and red beads. Suppose that rather than wanting an estimate of the percent of blue beads I am more interested in the question are there more blue beads or red beads. 
+
+Suppose we take a random sample of $N=100$ and we observe 53 blue beads. This seems to be pointing to their being more blue than red. However, as data scientists we need to be skeptical. We know there is chance involved in this process and we could get a 53 even when the proportions of red and blue are the  same. We call this a _null hypothesis_. The null hypothesis is the skeptics hypothesis: the proportion of blue beads $p$ is 0.5. We have observed a random variable $\hat{p} = 0.53$ and the p-value is the answer to the question how likely is it to see a value this large, when the null hypothesis is true. So we write
+
+$$\mbox{Pr}(\mid \hat{p} - 0.5 \mid > 0.03 ) $$
+
+assuming the $p=0.5$. Under the null we know that 
+
+$$
+\sqrt{N}\frac{\hat{p} - 0.5}{\sqrt{0.5(1-0.5)}}
+$$
+
+is standard normal. So we can compute the probability above, which is the p-value.
+
+$$\mbox{Pr}\left(\sqrt{N}\frac{\mid \hat{p} - 0.5\mid}{\sqrt{0.5(1-0.5)}} > \sqrt{N} \frac{0.03}{ \sqrt{0.5(1-0.5)}}\right)$$
+
+
+```{r}
+N=100
+z <- sqrt(N)*0.03/0.5
+1 - (pnorm(0.6) - pnorm(-0.6))
+```
+
+So we do in fact have reason to be a skeptics. By constructing a p-value we see that 
+
+
+Assessment:
+If $\hat{p}=51$ and $N=10000$. What is the p-value?
+
+We can show that if a $x \times 100\%$ confidence interval does not include 0, then the p-value must be smaller than $1-x$. So they provide related information. However, the confidence interval is always more informative as it gives information of the size of the estimate. 
+
+Assessment:
+Suppose you are comparing average test scores from two school districts. You have exams from a random sample of 10000. The p-value for the difference in average scores is 0.01. Should we change the curriculum of the district with highly significant statistical differences? 
+
+
+
+
+
+
+
+
+
+
+
+
 
 #### Setting the random seed
 
