@@ -37,8 +37,6 @@ This is a contrived example, but it will help us understand how we think about m
 
 If we are betting on black on roulette, we can let $Y_i$ be either -1 or 1. Now what is $\theta$ and what is the distribution of our error? What is the standard deviation of the errors? Hint: the expected value of the error must be 0.
 
-
-
 Answer: Our parameter is $\theta = -1/19$ and our errors are $1 - \theta$ with probability $9/19$ and $-1 - \theta$ with probability $10/19$. 
 
 Double check that the expected value is 0:

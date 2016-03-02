@@ -315,7 +315,10 @@ dat2 <- mutate(dat, group=group) %>%
 
 ggplot(filter(dat2, year==1970 & group%in%c("OECD","OPEC","Asia","Africa","Americas")), 
        aes(x = gdp/population/365)) +
-  geom_density(aes(weight=population/sum(population))) + scale_x_log10()
+  geom_density(aes(weight=population/sum(population))) + scale_x_log10()  
+
+# use proportion of population as the weight -- make the density axis more appropriate
+# x is gdp/population/365
 ```
 
 ## Problem 5.2
