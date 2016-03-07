@@ -38,6 +38,8 @@ The most basic statistical summary of a list of numbers is it's distribution. Th
 One approach to summarizing these numbers is to simply list them all out for the alien to see. Here are 10 randomly selected heights :
 
 ```{r}
+library(dplyr)
+library(tidyr)
 select(dat, height) %>% print(n=10)
 ```
 
@@ -91,7 +93,7 @@ hist(dat$height)
 
 The plot has revealed another problem. We have a number hieghts that are larger than 96 inches and shorter than 12 inches. Let's view the data for which this is the case. To do this we introduce the or logical operator `|`
 
-```{r}
+```{r,eval=FALSE}
 filter(dat, height>96 | height < 12) %>% select(original)
 ```
 

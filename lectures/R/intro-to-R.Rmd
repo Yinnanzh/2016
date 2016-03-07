@@ -43,7 +43,6 @@ Windows we have special
 
 Now that you have download and installed R you are ready to start working with data. Whichever approach you are using to interact with R, we recommend RStudio, you should identify the console. 
 
-![the console](console_screen_shot.png)
 
 When you type a line of code into the consult and hit enter the command gets _executed_. For example, try typine
 
