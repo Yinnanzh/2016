@@ -1,0 +1,118 @@
+---
+title: "ReviewMidterm1"
+output: html_document
+---
+
+# Data Import
+```{r}
+# option 1
+dat <- read.csv("bio260-heights.csv")
+
+# option 2
+filename <- "https://raw.githubusercontent.com/datasciencelabs/data/master/bio260-heights.csv"
+dat <- read.csv(filename)
+
+# option 3
+library(downloader)
+url <- "https://raw.githubusercontent.com/datasciencelabs/data/master/bio260-heights.csv"
+filename <- basename(url)
+download(url,filename)
+dat <- read.csv(filename)
+```
+
+# Data Wrangling
+
+## readr
+```{r}
+tab <- read_csv()
+```
+
+
+## dplyr
+
+## tidyr
+
+## lubridate and stringr
+```{r}
+# use separate again to get month, day and year for start_date
+tab <- tab %>% separate(start_date, c("smonth", "sday", "syear"), sep = "/",
+                        convert = TRUE, fill = "right") 
+# if end_date has only 1 / then it is missing month, add it using the month from start_date
+tab <- tab %>% mutate(end_date = ifelse(str_count(end_date, "/") == 1,
+                                        paste(smonth, end_date, sep = "/"), end_date))
+# use lubridate function mdy to conver end_date to date (chr to time)
+tab <- tab %>% mutate(end_date = mdy(end_date))
+# add 2000 to year of start_date since it is currently 7 or 8
+tab <- tab %>% mutate(syear = ifelse(is.na(syear), year(end_date), syear + 2000))
+# now use unite to create a m/d/y string of start_date
+tab <- tab %>% unite(start_date, smonth, sday, syear)
+# covert it to date class
+tab <- tab %>% mutate(start_date = mdy(start_date))
+
+
+# further adjustment with time
+tab <- mutate(tab, Obama = as.numeric(Obama)/100, 
+              McCain=as.numeric(McCain)/100,
+              diff = Obama - McCain,
+              day=as.numeric(start_date - mdy("11/04/2008")),
+              week = floor(day/7))
+```
+
+
+## Basic R
+```{r}
+# expand.grid
+## generate all possible combinations, to a dataframe
+suits <- c("Diamonds", "Clubs", "Hearts", "Spades")
+numbers <- c("Ace", "Deuce", "Three", "Four","Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King")
+deck <- expand.grid( number=numbers, suit=suits)
+deck <- paste( deck$number, deck$suit)
+
+# permutation
+index <- permutations(52,2)
+first_card <- deck[index[,1]]
+second_card <- deck[index[,2]]
+
+# product
+exact_prob <- function(n){
+  prob_unique <- seq(365,365-n+1)/365 
+  1 - prod( prob_unique)
+}
+
+```
+
+           
+# Data Visulization
+
+# Probability
+
+## Monte Carlo Simulaion
+        
+```{r}
+beads <- rep( c("red", "blue"), times = c(2,3))
+events <- replicate( B, sample( beads, 1))
+events <- sample(beads, B, replace = TRUE) ##default is FALSE
+
+x <- rep( c("D","R"), n*c( p, 1-p))
+x <- sample(x) ##not necessary, but shuffle them
+
+sample(c(-1,1),10, replace=T, prob=c(p,1-p))
+
+```
+
+
+# Distribution
+```{r}
+
+# t distribution
+1-pt(sqrt(N)/sd(X),N-1)
+```
+
+
+
+
+
+
+
+
+

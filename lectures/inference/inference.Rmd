@@ -288,7 +288,7 @@ sigma/sqrt(N)
 2. Confirm that the distribution is approximately normal with mean 0 and standard deviation $\sigma / N$
 
 ```{r}
-<<<<<<< HEAD
+
 
 ```
 
@@ -309,8 +309,7 @@ sigma/sqrt(N)
 4. Use the CLT to compute the probability of a positive earnings. Confirm with the simulation results. http://goo.gl/forms/7TWqQdrWuf
 
 ```{r}
-pnorm
-=======
+
 z <- error/ (sigma / sqrt(N)  )
 qqnorm(z)
 abline(0,1)
@@ -347,7 +346,7 @@ and we can compute
 1 - pnorm( -sqrt(N)*mu/sigma )
 ##and compare to
 mean(error > -mu)
->>>>>>> course/master
+
 ```
 
 5. With $N=400$ the probability of negative earnings is too high. What does $N$ need to be for the probability of positive earnings is 0? Confirm with a simulation.
@@ -418,7 +417,7 @@ sigma/sqrt(N)
 
 3. What is the probability that our estimate is within one inch of the population average?
 
-<<<<<<< HEAD
+
 ```{r}
 mu <- mean(y)
 sigma <- sqrt(mean((y-mu)^2))
@@ -432,7 +431,7 @@ N <- 25
 mu
 sigma/sqrt(N)
 ```
-=======
+
 Let's call the sample average 
 
 $$\bar{Y} = \frac{1}{N}\sum_{i=1}^N Y_i$$ 
@@ -564,36 +563,24 @@ prob_heads <- sample(c(0.5, 0.6, 0.4),1)
 1. Now the probability is set. The coin is either fair or not, but we don't know which. Use a Monte Carlo simulation to toss your coin 100 times. Report the proportion of heads
 
 ```{r}
-<<<<<<< HEAD
-mean(sample(c(1,0),100, replace=T, prob=c(prob_heads,1-prob_heads)))
-```
 
-=======
 N <- 100
 X <- sample(c(0,1), N, replace=TRUE,
             prob=c(1-prob_heads,prob_heads))
 ph_hat <- mean(X)
 ph_hat
 ```
->>>>>>> course/master
+
 
 2. Is it fair? Use CLT to construct a 95% confidence based on this estimate.
 
 ```{r}
-<<<<<<< HEAD
-ph_hat <- mean(sample(c(1,0),100, replace=T, prob=c(prob_heads,1-prob_heads)))
-N <- 100
-conf_int <- ph_hat + c(-1,1)*qnorm(0.975)*sqrt(ph_hat*(1-ph_hat)/N)
-conf_int
-```
-
-=======
 conf_int <- ph_hat +
   c(-1,1)*qnorm(0.975)*sqrt(ph_hat*(1-ph_hat))/
   sqrt(N)
 conf_int
 ```
->>>>>>> course/master
+
 
 3. Does the interval cover the true value of `prob_head`?
 
@@ -604,16 +591,7 @@ prob_heads>=ci[1] & prob_heads<=ci[2]
 4. No use a Monte Carlo simulation to re run this experiment (keeping `prob_hear` fixed) 10000 times. Do we confirm that we cover 95% of the time?
 
 ```{r}
-<<<<<<< HEAD
-cover <- replicate(10000, {
-        ph_hat <- mean(sample(c(1,0),100, replace=T, prob=c(prob_heads,1-prob_heads)))
-        conf_int <- ph_hat + c(-1,1)*qnorm(0.975)*sqrt(ph_hat*(1-ph_hat)/100)
-        prob_heads >= conf_int[1] && prob_heads <= conf_int[2]
-        })
 
-mean(cover)
-
-=======
 B <- 10000
 cover <- replicate(B,{
   X <- sample(c(0,1), N, replace=TRUE,
@@ -625,7 +603,7 @@ cover <- replicate(B,{
   prob_heads>=ci[1] & prob_heads<=ci[2]
 })
 mean(cover)
->>>>>>> course/master
+
 ```
 
 
