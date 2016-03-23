@@ -102,6 +102,23 @@ R <- sample_n( father.son, 100) %>% summarize(cor(fheight, sheight))
 
 Use a Monte Carlo simulation to learn the distribution of the difference between `R` and the actual correlation. What is the SE of `R`? What is the distribution?
 
+```{r}
+B <- 1000
+N <- 100
+r <- cor(father.son$fheight, father.son$sheight)
+Rs <- replicate(B, sample_n( father.son, N, replace=TRUE) %>% 
+            summarize(r = cor(fheight, sheight)) %>% .$r
+          )
+
+dat <- data.frame(R = Rs - r)
+ggplot(dat, aes(Rs)) + geom_histogram()
+ggplot(dat) + stat_qq(aes(sample=scale(R))) + 
+                        geom_abline(intercept = 0, slope = 1)
+dat %>% summarize(sd(R))
+
+```
+
+
 ###Assessment
 
 Re-do the assessment when the sample size is 250 instead of 25?
@@ -281,7 +298,7 @@ $$ X_i = \gamma_0 + \gamma_1 y_i + \delta, i=1,\dots,N $$
 
 A few important observations:
 
-1. We use $\gamma$ instead of $\beta$ and $\delta$ instead of $\epislon$ because this is a different model. We can't solve the first equation to get the second because $\varepsilon$ is a random variable. 
+1. We use $\gamma$ instead of $\beta$ and $\delta$ instead of $\varepislon$ because this is a different model. We can't solve the first equation to get the second because $\varepsilon$ is a random variable. 
 
 Note that the regression lines are different:
 
