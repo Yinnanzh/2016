@@ -56,17 +56,17 @@ plot(hclust(d),labels=as.character(X$label))
 784 is too much for use to handle in a demo. So let's. We will compress the  predictors by combining groups of 16 pixels. 
 
 ```{r}
-tmp <- slice(original_dat,1:100)
-names(tmp) <- gsub("pixel","",names(tmp))
-tmp <- tmp %>% mutate(obs = 1:nrow(tmp)) 
-tmp <- tmp %>% gather(feature, value, `0`:`783`) 
+tmp <- slice(original_dat,1:100)   # run in a smaller set to test out
+names(tmp) <- gsub("pixel","",names(tmp))    # takes pixel out and only left the numbers
+tmp <- tmp %>% mutate(obs = 1:nrow(tmp))    # track which one is which obs
+tmp <- tmp %>% gather(feature, value, `0`:`783`) # transform to long form
 tmp <- tmp %>% mutate(feature = as.numeric(feature))
-tmp <- tmp %>% mutate(row = feature%%28, col =floor(feature/28))
-tmp <- tmp %>% mutate(row = floor(row/4), col = floor(col/4))
+tmp <- tmp %>% mutate(row = feature%%28, col =floor(feature/28))  # divide by 28 tells the col and row (residual)
+tmp <- tmp %>% mutate(row = floor(row/4), col = floor(col/4))     # get new row and col
 tmp <- tmp %>% group_by(obs, row, col) 
 tmp <- tmp %>% summarize(label = label[1], value = mean(value)) 
 tmp <- tmp %>% ungroup
-tmp <- tmp %>%  mutate(feature = sprintf("X_%02d_%02d",col,row))
+tmp <- tmp %>%  mutate(feature = sprintf("X_%02d_%02d",col,row))  # order
 tmp <- tmp %>%  select(-row, -col) 
 tmp <- tmp %>% group_by(obs) %>% spread(feature, value) %>% ungroup %>% select(-obs)
 ```
@@ -108,7 +108,7 @@ inTrain <- createDataPartition(y = dat$label,
                                p=0.9)$Resample
 X <- dat %>% select(-label) %>% slice(inTrain) %>% as.matrix
 column_means <- colMeans(X)
-plot(table(round(column_means)))
+plot(table(round(column_means)))  # about 10 always have 0
 ```
 
 Let's remove this low information feautures:
@@ -147,7 +147,7 @@ res <- train(label ~ .,
              tuneGrid=data.frame(k=seq(1,15,2)),
              metric="Accuracy")
 
-plot(res)
+plot(res)    # CV tells 3 have the highest accuracy
 
 fit <- knn3(label~., train_set, k=3)
 pred <- predict(fit, newdata = test_set, type="class")
